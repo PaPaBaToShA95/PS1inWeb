@@ -1,31 +1,51 @@
 <!DOCTYPE html>
-<html lang="uk">
-
+<html lang="UK">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Карта тривог</title>
+    <title>Document</title>
 </head>
-
 <body>
-    <main>
-        <h1>Карта тривог</h1>
-        <p>Карта тривог</p>
-    </main>
     <script>
-        fetch('https://api.alerts.in.ua/v1/iot/active_air_raid_alerts_by_oblast.json?token=28727fbffb2c23dddd794f1f28b62c2079a218a6ab2203')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text(); // Отримуємо текстову відповідь
-            })
-            .then(text => {
-                console.log('Текстова відповідь:', text); // Виводимо текст в консоль
-            })
-            .catch(error => console.log('Error:', error));
+      fetch('http://localhost:3000/alerts')
+            .then(response => response.text())
+            .catch(error => console.error('Помилка:', error));
+
+    const regions = [
+        "Автономна Республіка Крим", "Волинська область", "Вінницька область", "Дніпропетровська область",
+        "Донецька область", "Житомирська область", "Закарпатська область", "Запорізька область",
+        "Івано-Франківська область", "м. Київ", "Київська область", "Кіровоградська область",
+        "Луганська область", "Львівська область", "Миколаївська область", "Одеська область",
+        "Полтавська область", "Рівненська область", "м. Севастополь", "Сумська область",
+        "Тернопільська область", "Харківська область", "Херсонська область", "Хмельницька область",
+        "Черкаська область", "Чернівецька область", "Чернігівська область"
+    ];
+
+   
+    const response = "ANNAANNANAAAANANANNANANNANA";
+
+   
+    function decodeAlert(response, regions) {
+        for (let i = 0; i < response.length; i++) {
+            const region = regions[i];
+            const alertCode = response[i];
+
+            let alertStatus = '';
+            if (alertCode === 'A') {
+                alertStatus = 'Тривога!';
+            } else if (alertCode === 'P') {
+                alertStatus = 'Часткова тривога';
+            } else if (alertCode === 'N') {
+                alertStatus = 'Немає інформації про тривогу';
+            }
+
+            console.log(`${region} - ${alertStatus}`);
+        }
+    }
+
+ 
+    decodeAlert(response, regions);
 
     </script>
 </body>
-
 </html>
